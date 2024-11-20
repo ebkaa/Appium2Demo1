@@ -26,10 +26,10 @@ public class HookImp {
             System.out.println("sessionId: " + System.getenv("sessionId"));
             System.out.println("appiumVersion: " + System.getenv("appiumVersion"));
             
-            hubUrl = new URL("https://devicepark-appium-gw-service.testinium.io/wd/hub");
+            hubUrl = new URL(System.getenv("hubURL"));
             logger.info("----------BeforeScenario--------------");
             DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setCapability("platformName", "ANDROID");
+            capabilities.setCapability("platformName", System.getenv("platform"));
             capabilities.setCapability("udid", System.getenv("udid"));
             capabilities.setCapability("automationName", "UiAutomator2");
 
@@ -38,13 +38,10 @@ public class HookImp {
 
             HashMap<String, Object> deviceParkOptions = new HashMap<>();
             deviceParkOptions.put("sessionId", System.getenv("sessionId"));
-            deviceParkOptions.put("appiumVersion", "2.5.4");
+            deviceParkOptions.put("appiumVersion", System.getenv("appiumVersion"));
             capabilities.setCapability("dp:options", deviceParkOptions);
 
             androidDriver = new AndroidDriver(hubUrl, capabilities);
-
-            AndroidBatteryInfo info= androidDriver.getBatteryInfo();
-            logger.info(String.valueOf(info.getLevel()));
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
